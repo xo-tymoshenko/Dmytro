@@ -1,4 +1,4 @@
-package dev.tymoshenko.dmytro.ui.screens.components
+package dev.tymoshenko.dmytro.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -14,7 +14,7 @@ fun BottomBar() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(80.dp)
+            .height(69.dp)
             .background(color = MaterialTheme.colorScheme.secondary)
     )
 }

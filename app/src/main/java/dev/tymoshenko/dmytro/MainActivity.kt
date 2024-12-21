@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import dev.tymoshenko.dmytro.ui.screens.Messages
+import dev.tymoshenko.dmytro.ui.screens.messages.Messages
 import dev.tymoshenko.dmytro.ui.theme.DmytroTheme
 
 class MainActivity : ComponentActivity() {

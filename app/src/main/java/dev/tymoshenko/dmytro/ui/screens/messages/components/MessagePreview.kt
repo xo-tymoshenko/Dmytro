@@ -1,7 +1,6 @@
-package dev.tymoshenko.dmytro.ui.screens.components
+package dev.tymoshenko.dmytro.ui.screens.messages.components
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,16 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun MessagePreview(
-    text: String
-) {
+fun MessagePreview(text: String) {
     Card(
         modifier = Modifier.padding(16.dp)
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp)
+                .height(69.dp)
         ) {
             Text(
                 modifier = Modifier

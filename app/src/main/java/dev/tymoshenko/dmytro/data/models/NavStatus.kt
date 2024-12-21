@@ -1,6 +1,6 @@
 package dev.tymoshenko.dmytro.data.models
 
-enum class BarsStatus {
+enum class NavStatus {
     SHOWN,
     HIDDEN
 }
