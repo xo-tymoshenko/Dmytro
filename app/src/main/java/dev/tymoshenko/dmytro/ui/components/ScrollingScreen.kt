@@ -93,6 +93,8 @@ fun ScrollingScreenContent(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
+                    // Тут Padding must be non-negative виключення, якщо без макс.
+                    // Хз чому.
                     top = max(0.dp, topBarHeightState.value - topBarOffset),
                     bottom = max(0.dp, bottomBarHeightState.value - bottomBarOffset)
                 )
