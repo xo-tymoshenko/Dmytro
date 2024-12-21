@@ -37,7 +37,7 @@ fun Messages() {
 }
 
 @Composable
-fun MessagesContent(
+private fun MessagesContent(
     navStatus: NavStatus,
     listState: LazyListState
 ) {

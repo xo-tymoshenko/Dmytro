@@ -60,7 +60,7 @@ fun ScrollingScreen(
 }
 
 @Composable
-fun ScrollingScreenContent(
+private fun ScrollingScreenContent(
     topBarHeightState: MutableState<Dp>,
     bottomBarHeightState: MutableState<Dp>,
     topBarOffset: Dp,
