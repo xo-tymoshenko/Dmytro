@@ -5,9 +5,8 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import dev.tymoshenko.dmytro.data.models.Message
 import dev.tymoshenko.dmytro.data.models.NavStatus
@@ -20,14 +19,14 @@ import dev.tymoshenko.dmytro.utils.helpers.isScrollingUp
 
 @Composable
 fun Messages() {
-    val navStatus = remember { mutableStateOf(NavStatus.SHOWN) }
     val listState = rememberLazyListState()
 
     val isScrollingUp by listState.isScrollingUp()
-
-    LaunchedEffect(isScrollingUp) {
-        navStatus.value = if (isScrollingUp) NavStatus.SHOWN
-        else NavStatus.HIDDEN
+    val navStatus = remember {
+        derivedStateOf {
+            if (isScrollingUp) NavStatus.SHOWN
+            else NavStatus.HIDDEN
+        }
     }
 
     MessagesContent(
