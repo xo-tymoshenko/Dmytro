@@ -18,7 +18,6 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import dev.tymoshenko.dmytro.data.models.NavStatus
 
 @Composable
@@ -91,19 +90,6 @@ fun ScrollingScreenContent(
 
         Box(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(
-                    // Тут Padding must be non-negative виключення, якщо без макс.
-                    // Хз чому.
-                    top = max(0.dp, topBarHeightState.value - topBarOffset),
-                    bottom = max(0.dp, bottomBarHeightState.value - bottomBarOffset)
-                )
-        ) {
-            content.invoke()
-        }
-
-        Box(
-            modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .onGloballyPositioned {
                     with(density) { bottomBarHeightState.value = it.size.height.toDp() }
@@ -111,6 +97,17 @@ fun ScrollingScreenContent(
                 .offset(y = bottomBarOffset)
         ) {
             bottomBar?.invoke()
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    top = topBarHeightState.value - topBarOffset,
+                    bottom = bottomBarHeightState.value - bottomBarOffset
+                )
+        ) {
+            content.invoke()
         }
     }
 }
