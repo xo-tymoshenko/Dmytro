@@ -18,6 +18,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import dev.tymoshenko.dmytro.data.models.NavStatus
 
 @Composable
@@ -92,8 +93,8 @@ fun ScrollingScreenContent(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    top = topBarHeightState.value - topBarOffset,
-                    bottom = bottomBarHeightState.value - bottomBarOffset
+                    top = max(0.dp, topBarHeightState.value - topBarOffset),
+                    bottom = max(0.dp, bottomBarHeightState.value - bottomBarOffset)
                 )
         ) {
             content.invoke()
