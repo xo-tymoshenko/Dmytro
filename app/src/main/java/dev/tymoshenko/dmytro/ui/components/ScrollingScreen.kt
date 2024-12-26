@@ -1,8 +1,16 @@
 package dev.tymoshenko.dmytro.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -49,11 +57,8 @@ fun ScrollingScreen(
     )
 
     ScrollingScreenContent(
-        topBarHeightState = topBarHeightState,
-        bottomBarHeightState = bottomBarHeightState,
-        topBarOffset = topBarOffset.value,
-        bottomBarOffset = bottomBarOffset.value,
         topBar = topBar,
+        navStatus = navStatus,
         bottomBar = bottomBar,
         content = content
     )
@@ -61,53 +66,50 @@ fun ScrollingScreen(
 
 @Composable
 private fun ScrollingScreenContent(
-    topBarHeightState: MutableState<Dp>,
-    bottomBarHeightState: MutableState<Dp>,
-    topBarOffset: Dp,
-    bottomBarOffset: Dp,
+    navStatus: NavStatus,
+
     topBar: @Composable (() -> Unit)? = null,
     bottomBar: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
     val density = LocalDensity.current
 
-    Box(
+    Column(
         modifier = Modifier
             .systemBarsPadding()
             .fillMaxSize()
             .clipToBounds()
     ) {
-        Box(
-            modifier = Modifier
-                .align(alignment = Alignment.TopCenter)
-                .onGloballyPositioned {
-                    with(density) { topBarHeightState.value = it.size.height.toDp() }
-                }
-                .offset(y = -topBarOffset)
-        ) {
+        androidx.compose.animation.AnimatedVisibility(
+            visible = if (navStatus == NavStatus.SHOWN) true else false,
+            enter = expandVertically(
+                // Expand from the top.
+                expandFrom = Alignment.Top,
+                animationSpec = tween(500)
+            ),
+            exit = shrinkVertically(animationSpec = tween(500)),
+        ){
             topBar?.invoke()
         }
 
         Box(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .onGloballyPositioned {
-                    with(density) { bottomBarHeightState.value = it.size.height.toDp() }
-                }
-                .offset(y = bottomBarOffset)
-        ) {
-            bottomBar?.invoke()
-        }
 
-        Box(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(
-                    top = topBarHeightState.value - topBarOffset,
-                    bottom = bottomBarHeightState.value - bottomBarOffset
-                )
+                .weight(1F)
+
         ) {
             content.invoke()
+        }
+
+        androidx.compose.animation.AnimatedVisibility(
+            visible = if (navStatus == NavStatus.SHOWN) true else false,
+            enter = slideInVertically() + expandVertically(
+                expandFrom = Alignment.Bottom,
+                animationSpec = tween(500)
+            ),
+            exit = shrinkVertically(animationSpec = tween(500)),
+        ){
+            bottomBar?.invoke()
         }
     }
 }
