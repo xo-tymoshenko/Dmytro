@@ -5,8 +5,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import dev.tymoshenko.dmytro.data.models.Message
 import dev.tymoshenko.dmytro.data.models.NavStatus
@@ -15,19 +14,28 @@ import dev.tymoshenko.dmytro.ui.components.BottomBar
 import dev.tymoshenko.dmytro.ui.components.ScrollingScreen
 import dev.tymoshenko.dmytro.ui.components.TopBar
 import dev.tymoshenko.dmytro.ui.screens.messages.components.MessagePreview
-import dev.tymoshenko.dmytro.utils.helpers.isScrollingUp
 
 @Composable
 fun Messages() {
     val listState = rememberLazyListState()
 
-    val isScrollingUp by listState.isScrollingUp()
-    val navStatus = remember(isScrollingUp) {
-        mutableStateOf(
-            if (isScrollingUp) NavStatus.SHOWN
-            else NavStatus.HIDDEN
-        )
+    val navStatus = remember(listState) {
+        derivedStateOf {
+            when {
+                listState.firstVisibleItemScrollOffset == 0 && listState.firstVisibleItemIndex == 0 -> NavStatus.SHOWN
+                listState.lastScrolledBackward -> NavStatus.SHOWN
+                else -> NavStatus.HIDDEN
+            }
+        }
     }
+
+//    val isScrollingUp by listState.isScrollingUp()
+//    val navStatus = remember(isScrollingUp) {
+//        mutableStateOf(
+//            if (isScrollingUp) NavStatus.SHOWN
+//            else NavStatus.HIDDEN
+//        )
+//    }
 
     MessagesContent(
         navStatus = navStatus.value,
